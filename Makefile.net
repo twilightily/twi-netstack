@@ -1,0 +1,32 @@
+# Compiler and compilation flags
+CC      = gcc
+CFLAGS  = -Wall -Wextra -O2 -g
+
+# Name of your final network stack executable
+TARGET  = netstack
+
+# Source files and corresponding object files
+SRCS    = main.c eth.c tuntap.c
+OBJS    = $(SRCS:.c=.o)
+
+# Header files that your source code relies on
+HEADERS = netreq.h
+
+# Default target rule (runs when you type 'make' or 'make -f Makefile.net')
+all: $(TARGET)
+
+# Links the compiled object files together into the final executable binary
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+
+# Compiles each separate .c file into a individual .o object file
+# This rule monitors 'netreq.h'—if you modify it, all modules recompile safely!
+%.o: %.c $(HEADERS)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Clean up build artifacts to reset your working directory
+clean:
+	rm -f $(OBJS) $(TARGET)
+
+# Marks targets that do not represent physical files on disk
+.PHONY: all clean

@@ -1,5 +1,17 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <errno.h>
 #include <net/if.h>
+#include "netreq.h"
+#include <linux/if_tun.h>
 
+// Bring in the configuration macros used inside this module
+#define CLEAR(x) memset(&(x), 0, sizeof(x))
+#define print_error printf
 
 int tun_alloc(char *dev) //this function is used to create a TAP device in Linux. It takes a string argument dev, which specifies the name of the TAP device to be created. The function returns a file descriptor for the TAP device if successful, or a negative error code if there was an error.
 {
